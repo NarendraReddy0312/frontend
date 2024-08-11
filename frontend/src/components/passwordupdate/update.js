@@ -1,8 +1,12 @@
 import { Box, FormControl, FormLabel, Input, FormHelperText, Button, Heading, Flex, Stack, useColorModeValue, Link } from "@chakra-ui/react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { api } from "../actions/api";
+import axios from "axios";
 export const UpdatePassword = () => {
   const boxBg = useColorModeValue("rgba(255, 255, 255, 0.4)", "rgba(0, 0, 0, 0.4)");
   const boxShadow = useColorModeValue("xl", "dark-lg");
+  const nav=useNavigate()
   const [email,setEmail]=useState()
   const [newpassword,setNewpassword]=useState()
   const [current,setCurrentpassword]=useState()
@@ -11,30 +15,28 @@ export const UpdatePassword = () => {
     try {
 
       
-      const res = await axios.post(api + "/updates", { email, password });
+      const res = await axios.post(api + "/updates", { email, newpassword,current,confirm });
 
       if (res.data.message) {
-          sessionStorage.auth=JSON.stringify(res?.data?.values)
           console.log(res?.data?.values);
-          alert("Login successfully");
-          nav('/students')
+          alert("password updated successfully");
+          nav('/signin')
       } 
       else if (res.data.error) {
-          if (res.data.error === "Email not found. Please sign up.") {
-              alert("Email not found. Please sign up.");
-              window.location.href = "/signup"; // Redirect to signup page if email is not found
-          } else if (res.data.error === "Incorrect password. Please try again.") {
-              alert("Incorrect password. Please try again.");
+          if (res.data.error === "Email not found.") {
+              alert("Email not found. Please enter correct email.");
+          } else if (res.data.error === "Incorrect old password. Please try again.") {
+              alert("Incorrect old password. Please try again.");
           } else {
               alert("An error occurred during login. Please try again later.");
           }
       }
   } catch (e) {
       console.log(e);
-      alert("An error occurred while attempting to sign in. Please try again later.");
+      alert("An error occurred during the update. Please try again later.");
   }
 }; 
-  }
+  
 
 
   return (
@@ -70,6 +72,7 @@ export const UpdatePassword = () => {
               _hover={{ borderColor: "teal.400" }}
               _focus={{ boxShadow: "0 0 0 3px rgba(56, 178, 172, 0.6)" }}
               transition="all 0.2s ease-in-out"
+              onChange={(e)=>setEmail(e.target.value)}
             />
           </FormControl>
           <FormControl>
@@ -81,6 +84,7 @@ export const UpdatePassword = () => {
               _hover={{ borderColor: "teal.400" }}
               _focus={{ boxShadow: "0 0 0 3px rgba(56, 178, 172, 0.6)" }}
               transition="all 0.2s ease-in-out"
+              onChange={(e)=>setCurrentpassword(e.target.value)}
             />
             <Link
               color="teal.500"
@@ -102,6 +106,7 @@ export const UpdatePassword = () => {
               _hover={{ borderColor: "teal.400" }}
               _focus={{ boxShadow: "0 0 0 3px rgba(56, 178, 172, 0.6)" }}
               transition="all 0.2s ease-in-out"
+              onChange={(e)=>setNewpassword(e.target.value)}
             />
             <FormHelperText>Ensure your new password is strong.</FormHelperText>
           </FormControl>
@@ -114,6 +119,7 @@ export const UpdatePassword = () => {
               _hover={{ borderColor: "teal.400" }}
               _focus={{ boxShadow: "0 0 0 3px rgba(56, 178, 172, 0.6)" }}
               transition="all 0.2s ease-in-out"
+              onChange={(e)=>setConfirm(e.target.value)}
             />
           </FormControl>
           <Button
@@ -124,6 +130,7 @@ export const UpdatePassword = () => {
             _hover={{ bgGradient: "linear(to-r, teal.500, green.400)", boxShadow: "xl" }}
             _active={{ bgGradient: "linear(to-r, teal.600, green.500)", boxShadow: "2xl" }}
             transition="all 0.3s ease-in-out"
+            onClick={Updatepassword}
           >
             Update Password
           </Button>

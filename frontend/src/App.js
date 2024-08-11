@@ -11,6 +11,7 @@ import { SignIn } from './components/signin/sign';
 import { SignUp } from './components/signup/signup';
 import { Profile } from './components/profile/profile';
 import { StudentData } from './components/studentdata/students';
+import { UpdatePassword } from './components/passwordupdate/update';
 
 
 
@@ -23,6 +24,7 @@ function App() {
       <Route path='/signup' element={<SignUp/>}/>
       <Route path='/students' element={<StudentData/>}/>
       <Route path='/profile' element={<Profile/>}/>
+      <Route path='/update' element={<UpdatePassword/>}/>
     </Routes>
     </BrowserRouter>
     <StudentData/>
