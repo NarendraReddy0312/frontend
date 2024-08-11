@@ -9,6 +9,8 @@ export const UpdatePassword = () => {
   const [confirm,setConfirm]=useState()
   const Updatepassword=async()=>{
     try {
+
+      
       const res = await axios.post(api + "/updates", { email, password });
 
       if (res.data.message) {
